@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Food - Fast Food</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #faf8f2;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8b1e2d;
+        }
+
+        .form-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 13px;
+            background: #8b1e2d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #8b1e2d;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🍔 Edit Food</h1>
+
+    <div class="form-box">
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <label>Category</label>
+
+            <select name="category" required>
+
+                {% for category in categories %}
+
+                    <option value="{{ category.id }}"
+                        {% if category.id == food.category.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ category.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>Food Name</label>
+
+            <input
+                type="text"
+                name="name"
+                value="{{ food.name }}"
+                required
+            >
+
+
+            <label>Description</label>
+
+            <textarea name="description">{{ food.description }}</textarea>
+
+
+            <label>Price</label>
+
+            <input
+                type="number"
+                name="price"
+                step="0.01"
+                value="{{ food.price }}"
+                required
+            >
+
+
+            <label>Food Image</label>
+
+            <input
+                type="file"
+                name="image"
+                accept="image/*"
+            >
+
+
+            <button type="submit">
+                Save Changes
+            </button>
+
+        </form>
+
+        <a href="{% url 'menu_management' %}" class="back">
+            ← Back to Menu
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - Fast Food</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #faf7ef;
+            color: #2d1b1b;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 245px;
+            background: #7b1e2b;
+            color: white;
+            min-height: 100vh;
+            padding: 28px 18px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .brand {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .brand-icon {
+            width: 58px;
+            height: 58px;
+            background: #ffe39a;
+            color: #7b1e2b;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .brand h1 {
+            margin: 13px 0 5px;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+
+        .brand p {
+            margin: 0;
+            color: #f8dca0;
+            font-size: 12px;
+        }
+
+
+        /* NAVIGATION */
+
+        .nav {
+            margin-top: 28px;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            color: #e8bfc3;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 0 12px 10px;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+            padding: 13px 14px;
+            margin-bottom: 7px;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .nav a.active {
+            background: #ffe39a;
+            color: #7b1e2b;
+            font-weight: bold;
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 245px;
+            width: calc(100% - 245px);
+            padding: 28px 35px;
+        }
+
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome h2 {
+            margin: 0;
+            color: #7b1e2b;
+            font-size: 27px;
+        }
+
+        .welcome p {
+            margin: 7px 0 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 9px 14px;
+            border-radius: 30px;
+            border: 1px solid #eadfca;
+        }
+
+        .profile-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #ffe39a;
+            color: #7b1e2b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .profile-text strong {
+            display: block;
+            color: #7b1e2b;
+            font-size: 13px;
+        }
+
+        .profile-text small {
+            color: #888;
+            font-size: 11px;
+        }
+
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #eadfca;
+            border-radius: 17px;
+            padding: 21px;
+            box-shadow: 0 5px 18px rgba(123, 30, 43, 0.06);
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-title {
+            color: #777;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: #fff1c9;
+            color: #7b1e2b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .stat-number {
+            color: #7b1e2b;
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 14px;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           SALES
+        ========================= */
+
+        .sales-card {
+            background: #ffe39a;
+            border-radius: 18px;
+            padding: 24px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .sales-left h3 {
+            margin: 0;
+            color: #7b1e2b;
+            font-size: 15px;
+        }
+
+        .sales-left p {
+            margin: 6px 0 0;
+            color: #8c6262;
+            font-size: 12px;
+        }
+
+        .sales-amount {
+            font-size: 30px;
+            font-weight: bold;
+            color: #7b1e2b;
+        }
+
+
+        /* =========================
+           CONTENT GRID
+        ========================= */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 22px;
+        }
+
+
+        /* =========================
+           RECENT ORDERS
+        ========================= */
+
+        .card {
+            background: white;
+            border: 1px solid #eadfca;
+            border-radius: 18px;
+            box-shadow: 0 5px 18px rgba(123, 30, 43, 0.06);
+        }
+
+        .card-header {
+            padding: 20px 22px;
+            border-bottom: 1px solid #eee5d5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            color: #7b1e2b;
+            font-size: 18px;
+        }
+
+        .card-header span {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .orders-list {
+            padding: 0 22px;
+        }
+
+        .order {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 17px 0;
+            border-bottom: 1px solid #eee5d5;
+        }
+
+        .order:last-child {
+            border-bottom: none;
+        }
+
+        .order-left {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .order-number {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #fff1c9;
+            color: #7b1e2b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .order-info strong {
+            display: block;
+            color: #7b1e2b;
+            font-size: 14px;
+        }
+
+        .order-info small {
+            display: block;
+            color: #888;
+            margin-top: 5px;
+            font-size: 11px;
+        }
+
+        .order-right {
+            text-align: right;
+        }
+
+        .order-price {
+            font-weight: bold;
+            color: #2d1b1b;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #fff1c9;
+            color: #7b1e2b;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .quick-card {
+            background: white;
+            border: 1px solid #eadfca;
+            border-radius: 18px;
+            box-shadow: 0 5px 18px rgba(123, 30, 43, 0.06);
+            padding-bottom: 16px;
+        }
+
+        .quick-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee5d5;
+        }
+
+        .quick-header h3 {
+            margin: 0;
+            color: #7b1e2b;
+            font-size: 18px;
+        }
+
+        .quick-header p {
+            margin: 6px 0 0;
+            color: #999;
+            font-size: 11px;
+        }
+
+        .quick-links {
+            padding: 10px 15px;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #2d1b1b;
+            padding: 13px 10px;
+            border-radius: 11px;
+            transition: 0.2s;
+        }
+
+        .quick-link:hover {
+            background: #fff8e6;
+            color: #7b1e2b;
+        }
+
+        .quick-icon {
+            width: 34px;
+            height: 34px;
+            background: #fff1c9;
+            color: #7b1e2b;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .quick-link span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .no-orders {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1050px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 10px;
+            }
+
+            .brand h1,
+            .brand p,
+            .nav-title,
+            .nav a span:not(.nav-icon) {
+                display: none;
+            }
+
+            .brand-icon {
+                width: 45px;
+                height: 45px;
+            }
+
+            .nav a {
+                justify-content: center;
+                padding: 13px 5px;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 20px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .admin-profile {
+                display: none;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .sales-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .order {
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="layout">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                FF
+            </div>
+
+            <h1>FAST FOOD</h1>
+
+            <p>Restaurant Management</p>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <div class="nav-title">
+                Main Menu
+            </div>
+
+            <a href="{% url 'dashboard' %}" class="active">
+                <span class="nav-icon">DB</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{% url 'admin_orders' %}">
+                <span class="nav-icon">OR</span>
+                <span>Orders</span>
+            </a>
+
+            <a href="{% url 'menu_management' %}">
+                <span class="nav-icon">MN</span>
+                <span>Menu Management</span>
+            </a>
+
+            <a href="{% url 'order_history' %}">
+                <span class="nav-icon">HI</span>
+                <span>Order History</span>
+            </a>
+
+            <a href="{% url 'analytics' %}">
+                <span class="nav-icon">AN</span>
+                <span>Analytics</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+            <div class="welcome">
+
+                <h2>Good day, Admin</h2>
+
+                <p>
+                    Here's what's happening in your restaurant today.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+                <div class="profile-circle">
+                    A
+                </div>
+
+                <div class="profile-text">
+
+                    <strong>Administrator</strong>
+
+                    <small>Restaurant Owner</small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             STATISTICS
+        ========================= -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-title">
+                        Total Orders
+                    </div>
+
+                    <div class="stat-icon">
+                        OR
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    {{ total_orders }}
+                </div>
+
+                <div class="stat-label">
+                    All orders received
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-title">
+                        Pending
+                    </div>
+
+                    <div class="stat-icon">
+                        PN
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    {{ pending_orders }}
+                </div>
+
+                <div class="stat-label">
+                    Waiting for confirmation
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-title">
+                        Preparing
+                    </div>
+
+                    <div class="stat-icon">
+                        PR
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    {{ preparing_orders }}
+                </div>
+
+                <div class="stat-label">
+                    Currently in kitchen
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-title">
+                        Ready
+                    </div>
+
+                    <div class="stat-icon">
+                        RD
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    {{ ready_orders }}
+                </div>
+
+                <div class="stat-label">
+                    Ready for pickup
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             SALES
+        ========================= -->
+
+        <div class="sales-card">
+
+            <div class="sales-left">
+
+                <h3>Total Sales</h3>
+
+                <p>
+                    Total revenue from all completed orders
+                </p>
+
+            </div>
+
+            <div class="sales-amount">
+                ₹{{ total_sales }}
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             CONTENT
+        ========================= -->
+
+        <div class="content-grid">
+
+
+            <!-- RECENT ORDERS -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <h3>Recent Orders</h3>
+
+                    <span>Latest 5 orders</span>
+
+                </div>
+
+
+                <div class="orders-list">
+
+
+                    {% for order in recent_orders %}
+
+                    <div class="order">
+
+
+                        <div class="order-left">
+
+                            <div class="order-number">
+                                #{{ order.id }}
+                            </div>
+
+
+                            <div class="order-info">
+
+                                <strong>
+                                    Order #{{ order.id }}
+                                </strong>
+
+                                <small>
+                                    Table {{ order.table.table_number }}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="order-right">
+
+                            <div class="order-price">
+                                ₹{{ order.total_amount }}
+                            </div>
+
+                            <div class="status">
+                                {{ order.status }}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    {% empty %}
+
+                    <div class="no-orders">
+                        No orders have been received yet.
+                    </div>
+
+                    {% endfor %}
+
+
+                </div>
+
+            </section>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <section class="quick-card">
+
+                <div class="quick-header">
+
+                    <h3>Quick Access</h3>
+
+                    <p>
+                        Manage your restaurant
+                    </p>
+
+                </div>
+
+
+                <div class="quick-links">
+
+
+                    <a href="{% url 'admin_orders' %}" class="quick-link">
+
+                        <div class="quick-icon">
+                            OR
+                        </div>
+
+                        <span>
+                            Manage Orders
+                        </span>
+
+                    </a>
+
+
+                    <a href="{% url 'menu_management' %}" class="quick-link">
+
+                        <div class="quick-icon">
+                            MN
+                        </div>
+
+                        <span>
+                            Manage Menu
+                        </span>
+
+                    </a>
+
+
+                    <a href="{% url 'order_history' %}" class="quick-link">
+
+                        <div class="quick-icon">
+                            HI
+                        </div>
+
+                        <span>
+                            Order History
+                        </span>
+
+                    </a>
+
+
+                    <a href="{% url 'analytics' %}" class="quick-link">
+
+                        <div class="quick-icon">
+                            AN
+                        </div>
+
+                        <span>
+                            View Analytics
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

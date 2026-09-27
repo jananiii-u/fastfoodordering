@@ -1,0 +1,398 @@
+/* =========================================
+   FAST FOOD MENU
+   Yellow + Maroon Design
+   ========================================= */
+
+:root {
+    --maroon: #7b1e2b;
+    --dark-maroon: #5a1420;
+    --yellow: #f4c542;
+    --light-yellow: #fff7d6;
+    --cream: #fffdf7;
+    --text: #2d1b1b;
+    --muted: #777;
+    --white: #ffffff;
+    --border: #eadfca;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #faf7ef;
+    color: var(--text);
+}
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.header {
+    background: var(--maroon);
+    color: white;
+    padding: 25px 30px;
+    text-align: center;
+    position: relative;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.header p {
+    margin: 8px 0 0;
+    color: #ffe9a8;
+    font-size: 15px;
+}
+
+/* =========================================
+   MAIN CONTAINER
+   ========================================= */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+/* =========================================
+   TABLE INFORMATION
+   ========================================= */
+
+.table-info {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 25px;
+    text-align: center;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 5px 18px rgba(123, 30, 43, 0.08);
+}
+
+.table-info h2 {
+    margin: 0 0 8px;
+    color: var(--maroon);
+    font-size: 25px;
+}
+
+.table-info p {
+    margin: 0;
+    color: #666;
+}
+
+/* =========================================
+   CATEGORY
+   ========================================= */
+
+.category {
+    margin-bottom: 40px;
+}
+
+.category h2 {
+    color: var(--maroon);
+    font-size: 25px;
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--yellow);
+    display: inline-block;
+}
+
+/* =========================================
+   FOOD GRID
+   ========================================= */
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+/* =========================================
+   FOOD CARD
+   ========================================= */
+
+.food-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 5px 15px rgba(90, 20, 32, 0.08);
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(123, 30, 43, 0.16);
+    border-color: var(--yellow);
+}
+
+/* =========================================
+   FOOD NAME
+   ========================================= */
+
+.food-card h3 {
+    margin: 0 0 10px;
+    color: var(--maroon);
+    font-size: 20px;
+}
+
+.food-card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   PRICE
+   ========================================= */
+
+.price {
+    color: var(--dark-maroon);
+    font-size: 19px;
+    font-weight: 700;
+    margin: 15px 0 8px;
+}
+
+/* =========================================
+   AVAILABLE
+   ========================================= */
+
+.available {
+    color: #168534;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* =========================================
+   ADD TO CART BUTTON
+   ========================================= */
+
+.add-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+
+    background: var(--maroon);
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    text-align: center;
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+    background: var(--yellow);
+    color: var(--dark-maroon);
+}
+
+/* =========================================
+   EMPTY MENU
+   ========================================= */
+
+.food-card h2 {
+    color: var(--maroon);
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    .food-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .container {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .header {
+        padding: 22px 15px;
+    }
+
+    .header h1 {
+        font-size: 26px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .food-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .table-info {
+        padding: 20px 15px;
+    }
+
+    .category h2 {
+        font-size: 22px;
+    }
+}
+/* =========================================
+   CART ITEM DESIGN
+   ========================================= */
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eadfca;
+    animation: cartSlideIn 0.35s ease;
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item h3 {
+    margin: 0 0 7px;
+    color: var(--maroon);
+    font-size: 17px;
+}
+
+.cart-item p {
+    margin: 0 0 10px;
+    color: #777;
+    font-size: 13px;
+}
+
+/* Quantity controls */
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.quantity-controls a {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--maroon);
+    color: white;
+
+    border-radius: 7px;
+
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+
+    transition: all 0.2s ease;
+}
+
+.quantity-controls a:hover {
+    background: var(--yellow);
+    color: var(--dark-maroon);
+    transform: scale(1.1);
+}
+
+.quantity-controls span {
+    min-width: 25px;
+    text-align: center;
+
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark-maroon);
+}
+
+/* Remove button */
+
+.remove-item {
+    display: inline-block;
+    margin-top: 4px;
+
+    color: #a33;
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+
+.remove-item:hover {
+    color: var(--maroon);
+    text-decoration: underline;
+}
+
+/* Item total */
+
+.cart-item > strong {
+    color: var(--dark-maroon);
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+/* Cart item animation */
+
+@keyframes cartSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Button click animation */
+
+.quantity-controls a:active {
+    transform: scale(0.9);
+}
+
+/* Remove animation feel */
+
+.remove-item:active {
+    transform: scale(0.95);
+}
+/* Food Banner */
+.banner-food {
+    width: 100%;
+    margin: 0 0 30px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(123, 30, 43, 0.12);
+}
+
+.banner-food img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+}
+
+.banner-food:hover img {
+    transform: scale(1.02);
+}

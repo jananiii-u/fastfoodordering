@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table Management - Fast Food</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #faf7ef;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #7b1e2b;
+            margin-bottom: 30px;
+        }
+
+        .tables-container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .table-card {
+            background: white;
+            border: 1px solid #eadfca;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+        }
+
+        .table-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #7b1e2b;
+        }
+
+        .status {
+            color: green;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .qr-button {
+            background: #7b1e2b;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .qr-button:hover {
+            background: #5f1722;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🍽️ Table Management</h1>
+
+<div class="tables-container">
+
+    {% for table in tables %}
+
+        <div class="table-card">
+
+            <div>
+                <div class="table-name">
+                    Table {{ table.table_number }}
+                </div>
+
+                {% if table.is_active %}
+                    <div class="status">● Active</div>
+                {% else %}
+                    <div style="color:red; font-weight:bold;">
+                        ● Inactive
+                    </div>
+                {% endif %}
+            </div>
+
+            <div>
+                <a
+                    href="{% url 'table_qr' table.qr_token %}"
+                    target="_blank"
+                    class="qr-button"
+                >
+                    View QR
+                </a>
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="table-card">
+            <h2>No tables available.</h2>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,397 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout - Fast Food</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #faf7ef;
+            color: #2d1b1b;
+        }
+
+        .checkout-page {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .checkout-header h1 {
+            color: #7b1e2b;
+            margin-bottom: 8px;
+            font-size: 32px;
+        }
+
+        .checkout-header p {
+            color: #777;
+            margin: 0;
+        }
+
+        .checkout-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(123, 30, 43, 0.10);
+            border: 1px solid #eadfca;
+        }
+
+        .table-badge {
+            display: inline-block;
+            background: #fff0b8;
+            color: #7b1e2b;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #7b1e2b;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid #eadfca;
+        }
+
+        .item-name {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .item-details {
+            margin-top: 6px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .item-total {
+            font-weight: bold;
+            color: #7b1e2b;
+        }
+
+        .bill {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #eadfca;
+        }
+
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            font-size: 16px;
+        }
+
+        .grand-total {
+            background: #ffe39a;
+            padding: 18px;
+            border-radius: 12px;
+            color: #7b1e2b;
+            font-size: 21px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            border: none;
+            background: #7b1e2b;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.25s;
+        }
+
+        .confirm-btn:hover {
+            background: #5a1420;
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #7b1e2b;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .success-box {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .success-box h1 {
+            color: #168534;
+            margin-bottom: 10px;
+        }
+
+        .order-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #7b1e2b;
+            margin: 20px 0;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .empty-cart h2 {
+            color: #7b1e2b;
+        }
+
+        @media (max-width: 600px) {
+
+            .checkout-page {
+                margin: 20px auto;
+                padding: 12px;
+            }
+
+            .checkout-card {
+                padding: 20px;
+            }
+
+            .checkout-header h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="checkout-page">
+
+    {% if order_success %}
+
+        <!-- ==============================
+             ORDER SUCCESS
+             ============================== -->
+
+        <div class="checkout-card success-box">
+
+            <div class="success-icon">
+                ✅
+            </div>
+
+            <h1>Order Placed Successfully!</h1>
+
+            <p>
+                Your order has been sent to the kitchen.
+            </p>
+
+            <div class="order-number">
+                Order #{{ order.id }}
+            </div>
+
+            <p>
+                Table {{ table.table_number }}
+            </p>
+
+            <a href="{% url 'table_menu' table.qr_token %}"
+               class="back-btn">
+
+                ← Back to Menu
+
+            </a>
+
+        </div>
+
+
+    {% elif cart_items %}
+
+        <!-- ==============================
+             CHECKOUT
+             ============================== -->
+
+        <div class="checkout-header">
+
+            <h1>Checkout</h1>
+
+            <p>
+                Review your order before confirming
+            </p>
+
+        </div>
+
+
+        <div class="checkout-card">
+
+            <div class="table-badge">
+                🪑 Table {{ table.table_number }}
+            </div>
+
+
+            <h2 class="section-title">
+                Your Order
+            </h2>
+
+
+            {% for item in cart_items %}
+
+                <div class="item">
+
+                    <div>
+
+                        <div class="item-name">
+                            {{ item.food.name }}
+                        </div>
+
+                        <div class="item-details">
+                            ₹{{ item.food.price }} × {{ item.quantity }}
+                        </div>
+
+                    </div>
+
+                    <div class="item-total">
+                        ₹{{ item.item_total }}
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+
+            <!-- BILL -->
+
+            <div class="bill">
+
+                <div class="bill-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong>
+                        ₹{{ subtotal }}
+                    </strong>
+
+                </div>
+
+
+                <div class="bill-row">
+
+                    <span>
+                        GST (5%)
+                    </span>
+
+                    <strong>
+                        ₹{{ gst }}
+                    </strong>
+
+                </div>
+
+
+                <div class="bill-row grand-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <span>
+                        ₹{{ total }}
+                    </span>
+
+                </div>
+
+
+                <form method="POST"
+                      action="{% url 'place_order' table.qr_token %}">
+
+                    {% csrf_token %}
+
+                    <button type="submit"
+                            class="confirm-btn">
+
+                        Confirm Order →
+
+                    </button>
+
+                </form>
+
+
+                <a href="{% url 'table_menu' table.qr_token %}"
+                   class="back-btn">
+
+                    ← Back to Menu
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    {% else %}
+
+        <!-- ==============================
+             EMPTY CART
+             ============================== -->
+
+        <div class="checkout-card empty-cart">
+
+            <h2>
+                Your cart is empty
+            </h2>
+
+            <p>
+                Add some delicious food before checking out.
+            </p>
+
+            <a href="{% url 'table_menu' table.qr_token %}"
+               class="back-btn">
+
+                ← Back to Menu
+
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

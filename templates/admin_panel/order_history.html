@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order History - Fast Food</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #faf7ef;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #7b1e2b;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .order-card {
+            background: white;
+            border: 1px solid #eadfca;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eadfca;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .order-number {
+            font-size: 22px;
+            font-weight: bold;
+            color: #7b1e2b;
+        }
+
+        .table {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .status {
+            background: #fff0b8;
+            color: #7b1e2b;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .total {
+            border-top: 1px solid #eadfca;
+            margin-top: 15px;
+            padding-top: 15px;
+
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 20px;
+            font-weight: bold;
+            color: #7b1e2b;
+        }
+
+        .empty {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>📜 Order History</h1>
+
+<div class="container">
+
+    {% for order in orders %}
+
+        <div class="order-card">
+
+            <div class="header">
+
+                <div>
+                    <div class="order-number">
+                        Order #{{ order.id }}
+                    </div>
+
+                    <div class="table">
+                        Table {{ order.table.table_number }}
+                    </div>
+                </div>
+
+                <div class="status">
+                    {{ order.status }}
+                </div>
+
+            </div>
+
+            <h3>Items</h3>
+
+            {% for item in order.items.all %}
+
+                <div class="item">
+
+                    <span>
+                        {{ item.food.name }}
+                        × {{ item.quantity }}
+                    </span>
+
+                    <span>
+                        ₹{{ item.price }}
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+            <div class="total">
+
+                <span>Total</span>
+
+                <span>
+                    ₹{{ order.total_amount }}
+                </span>
+
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="empty">
+            <h2>No order history yet.</h2>
+            <p>Completed orders will appear here.</p>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

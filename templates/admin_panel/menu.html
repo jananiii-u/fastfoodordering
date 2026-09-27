@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Menu Management - Fast Food</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #faf7ef;
+            color: #2d1b1b;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 250px;
+            background: #841d2d;
+            color: white;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            padding: 28px 18px;
+        }
+
+
+        .logo-box {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+        }
+
+
+        .logo {
+            width: 58px;
+            height: 58px;
+            background: #ffe39a;
+            color: #841d2d;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 12px;
+            letter-spacing: 1px;
+        }
+
+
+        .brand-subtitle {
+            font-size: 13px;
+            color: #ffe39a;
+            margin-top: 5px;
+        }
+
+
+        .menu-title {
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            color: #eadfcf;
+            margin: 28px 10px 12px;
+            font-weight: bold;
+        }
+
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: white;
+            padding: 13px 14px;
+            border-radius: 12px;
+            margin-bottom: 6px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+
+        .nav-link.active {
+            background: #ffe39a;
+            color: #841d2d;
+            font-weight: bold;
+        }
+
+
+        .nav-icon {
+            width: 25px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 35px 42px;
+        }
+
+
+        /* =========================
+           TOP HEADER
+        ========================= */
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+
+        .page-title h1 {
+            margin: 0;
+            color: #841d2d;
+            font-size: 32px;
+        }
+
+
+        .page-title p {
+            margin: 7px 0 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            border: 1px solid #eadfcf;
+            padding: 8px 16px 8px 9px;
+            border-radius: 30px;
+        }
+
+
+        .admin-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #ffe39a;
+            color: #841d2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+
+        .admin-info strong {
+            display: block;
+            color: #841d2d;
+            font-size: 14px;
+        }
+
+
+        .admin-info span {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+
+        /* =========================
+           ACTION BAR
+        ========================= */
+
+        .action-bar {
+            background: white;
+            border: 1px solid #eadfcf;
+            border-radius: 16px;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(123,30,43,0.05);
+        }
+
+
+        .action-text h2 {
+            margin: 0;
+            color: #841d2d;
+            font-size: 18px;
+        }
+
+
+        .action-text p {
+            margin: 5px 0 0;
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        .add-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #841d2d;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 9px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        .add-btn:hover {
+            background: #6f1725;
+        }
+
+
+        /* =========================
+           MENU HEADER
+        ========================= */
+
+        .menu-section {
+            background: white;
+            border: 1px solid #eadfcf;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(123,30,43,0.06);
+        }
+
+
+        .section-header {
+            padding: 22px 25px;
+            border-bottom: 1px solid #eadfcf;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .section-header h2 {
+            margin: 0;
+            color: #841d2d;
+            font-size: 20px;
+        }
+
+
+        .section-header span {
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           FOOD GRID
+        ========================= */
+
+        .food-grid {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+
+        .food-card {
+            background: #fffdf8;
+            border: 1px solid #eadfcf;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+
+        .food-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(123,30,43,0.09);
+        }
+
+
+        /* =========================
+           IMAGE
+        ========================= */
+
+        .food-image {
+            width: 100%;
+            height: 175px;
+            object-fit: cover;
+            display: block;
+            background: #f3eee3;
+        }
+
+
+        .no-image {
+            width: 100%;
+            height: 175px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3eee3;
+            color: #999;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           FOOD CONTENT
+        ========================= */
+
+        .food-content {
+            padding: 18px;
+        }
+
+
+        .food-name {
+            font-size: 19px;
+            font-weight: bold;
+            color: #841d2d;
+            margin-bottom: 6px;
+        }
+
+
+        .category {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+
+        .description {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+            min-height: 40px;
+        }
+
+
+        .bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 13px;
+            border-top: 1px solid #eadfcf;
+        }
+
+
+        .price {
+            font-size: 19px;
+            font-weight: bold;
+            color: #841d2d;
+        }
+
+
+        .available {
+            color: #159447;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        .unavailable {
+            color: #c62828;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           MANAGEMENT BUTTONS
+        ========================= */
+
+        .management-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+
+        .btn {
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            padding: 9px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        .edit-btn {
+            background: #841d2d;
+            color: white;
+        }
+
+
+        .toggle-btn {
+            background: #fff0b8;
+            color: #841d2d;
+        }
+
+
+        .delete-btn {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+
+        .management-buttons form {
+            grid-column: span 2;
+            margin: 0;
+        }
+
+
+        .management-buttons form button {
+            width: 100%;
+        }
+
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+
+        .empty h2 {
+            color: #841d2d;
+            margin-bottom: 8px;
+        }
+
+
+        .empty p {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .food-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+                padding: 25px;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .action-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .add-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo-box">
+
+            <div class="logo">
+                FF
+            </div>
+
+            <div class="brand">
+                FAST FOOD
+            </div>
+
+            <div class="brand-subtitle">
+                Restaurant Management
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <a href="{% url 'dashboard' %}" class="nav-link">
+
+            <span class="nav-icon">DB</span>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="{% url 'admin_orders' %}" class="nav-link">
+
+            <span class="nav-icon">OR</span>
+
+            Orders
+
+        </a>
+
+
+        <a href="{% url 'admin_menu' %}" class="nav-link active">
+
+            <span class="nav-icon">MN</span>
+
+            Menu Management
+
+        </a>
+
+
+        <a href="{% url 'order_history' %}" class="nav-link">
+
+            <span class="nav-icon">HI</span>
+
+            Order History
+
+        </a>
+
+
+        <a href="{% url 'analytics' %}" class="nav-link">
+
+            <span class="nav-icon">AN</span>
+
+            Analytics
+
+        </a>
+
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- TOP HEADER -->
+
+        <div class="top-header">
+
+            <div class="page-title">
+
+                <h1>Menu Management</h1>
+
+                <p>
+                    Manage your restaurant food items and availability.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div class="admin-info">
+
+                    <strong>
+                        Administrator
+                    </strong>
+
+                    <span>
+                        Restaurant Owner
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ACTION BAR -->
+
+        <div class="action-bar">
+
+            <div class="action-text">
+
+                <h2>
+                    Restaurant Menu
+                </h2>
+
+                <p>
+                    Add, edit, hide or remove food items.
+                </p>
+
+            </div>
+
+
+            <a href="{% url 'add_food' %}" class="add-btn">
+                + Add New Food
+            </a>
+
+        </div>
+
+
+
+        <!-- MENU -->
+
+        <div class="menu-section">
+
+
+            <div class="section-header">
+
+                <h2>
+                    Food Items
+                </h2>
+
+                <span>
+                    {{ foods|length }} items
+                </span>
+
+            </div>
+
+
+
+            {% if foods %}
+
+                <div class="food-grid">
+
+
+                    {% for food in foods %}
+
+
+                        <div class="food-card">
+
+
+                            <!-- FOOD IMAGE -->
+
+                            {% if food.image %}
+
+                                <img
+                                    src="{{ food.image.url }}"
+                                    alt="{{ food.name }}"
+                                    class="food-image"
+                                >
+
+                            {% else %}
+
+                                <div class="no-image">
+                                    No Image
+                                </div>
+
+                            {% endif %}
+
+
+
+                            <div class="food-content">
+
+
+                                <!-- NAME -->
+
+                                <div class="food-name">
+                                    {{ food.name }}
+                                </div>
+
+
+
+                                <!-- CATEGORY -->
+
+                                <div class="category">
+
+                                    Category:
+                                    {{ food.category.name }}
+
+                                </div>
+
+
+
+                                <!-- DESCRIPTION -->
+
+                                <div class="description">
+
+                                    {% if food.description %}
+
+                                        {{ food.description }}
+
+                                    {% else %}
+
+                                        No description available.
+
+                                    {% endif %}
+
+                                </div>
+
+
+
+                                <!-- PRICE + AVAILABILITY -->
+
+                                <div class="bottom">
+
+
+                                    <div class="price">
+                                        ₹{{ food.price }}
+                                    </div>
+
+
+                                    {% if food.is_available %}
+
+                                        <div class="available">
+                                            ● Available
+                                        </div>
+
+                                    {% else %}
+
+                                        <div class="unavailable">
+                                            ● Unavailable
+                                        </div>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+
+                                <!-- MANAGEMENT BUTTONS -->
+
+                                <div class="management-buttons">
+
+
+                                    <!-- EDIT -->
+
+                                    <a
+                                        href="{% url 'edit_food' food.id %}"
+                                        class="btn edit-btn"
+                                    >
+                                        ✏️ Edit
+                                    </a>
+
+
+
+                                    <!-- TOGGLE -->
+
+                                    <a
+                                        href="{% url 'toggle_food' food.id %}"
+                                        class="btn toggle-btn"
+                                    >
+
+                                        {% if food.is_available %}
+
+                                            Hide
+
+                                        {% else %}
+
+                                            Show
+
+                                        {% endif %}
+
+                                    </a>
+
+
+
+                                    <!-- DELETE -->
+
+                                    <form
+                                        method="POST"
+                                        action="{% url 'delete_food' food.id %}"
+                                        onsubmit="return confirm('Are you sure you want to delete {{ food.name }}?');"
+                                    >
+
+                                        {% csrf_token %}
+
+                                        <button
+                                            type="submit"
+                                            class="btn delete-btn"
+                                        >
+                                            🗑️ Delete
+                                        </button>
+
+                                    </form>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- EMPTY MENU -->
+
+                <div class="empty">
+
+                    <h2>
+                        No Food Items Yet 🍽️
+                    </h2>
+
+                    <p>
+                        Your menu is currently empty.
+                        Add your first food item to get started.
+                    </p>
+
+                    <a
+                        href="{% url 'add_food' %}"
+                        class="add-btn"
+                    >
+                        + Add Food
+                    </a>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>
